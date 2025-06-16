@@ -1,0 +1,14 @@
+[Unit]
+Description=go-single-waypoint-server
+SourcePath=
+After=
+Requires=
+
+[Service]
+User=root
+Type=simple
+PIDFile=/run/go-single-waypoint-server.pid
+ExecStart=/usr/bin/go-single-waypoint-server
+
+[Install]
+WantedBy=
