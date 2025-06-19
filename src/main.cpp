@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#include <modal_pipe.h>
+#include "go-single-waypoint.h"
 
 static void print_usage()
 {
