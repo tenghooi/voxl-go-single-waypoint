@@ -5,23 +5,6 @@
 
 #include "go-single-waypoint.h"
 
-static void print_usage()
-{
-	std::cout << "\n\
-go-single-waypoint-server can be started from the command line manually with any of the following\n\
-debug options. 
-\n\
-go-single-waypoint-server also creates a control pipe to test sending commands back to\n\
-the server from either a client or from the command line. To test, try this:\n\
-echo -n test > /run/mpa/go-single-waypoint/control\n\
-\n\
--d, --debug                 print debug info\n\
--f, --frequency             publish frequency in hz\n\
--h, --help                  print this help message\n\
-\n";
-	return;
-}
-
 
 static int _parse_opts(int argc, char *argv[])
 {

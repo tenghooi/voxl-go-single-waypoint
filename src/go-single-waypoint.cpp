@@ -2,14 +2,72 @@
 
 void print_usage()
 {
+	std::cout << "\n\
+		go-single-waypoint-server can be started from the command line manually with any of the following debug options. 
+		\n\
+		go-single-waypoint-server also creates a control pipe to test sending commands back to\n\
+		the server from either a client or from the command line. To test, try this:\n\
+		echo -n test > /run/mpa/go-single-waypoint/control\n\
+		\n\
+		-d, --debug                 print debug info\n\
+		-f, --frequency             publish frequency in hz\n\
+		-h, --help                  print this help message\n\
+		\n"\
+	<< std::endl;
 
+	return;
 }
 
 int parse_opts(const int argc, const char* const argv[])
 {
+	static struct option LongOptions[] =
+	{
+		{"help",          no_argument,        0, 'h'},
+		{"input_imu",     required_argument,  0, 'i'},
+		{"new_line",      no_argument,        0, 'n'},
+	};
 
+	int optionIndex= 0;
+	int status = 0;
+	int option;
+
+	while ((status == 0) && (option = getopt_long (argc, argv, "hi:n", &LongOptions[0], &optionIndex)) != -1)
+	{
+		switch(option)
+		{
+
+			case 'h':
+				status = -1;
+				break;
+
+			case 'i':
+				sscanf(optarg, "%s", imu_name);
+				break;
+
+			case 'n':
+				en_newline = 1;
+				break;
+
+			// Unknown argument
+			case '?':
+			default:
+				std::cout << "Invalid argument passed!" << std::endl;
+				status = -1;
+				break;
+		}
+	}
+
+	if(status != 0) return status;
+
+	if(strlen(imu_name) == 0){
+		printf("Missing required argument: input imu\n\n");
+		return -1;
+	}
+
+	return status;
 }
 
+// called when the simple helper has data for us
 void helper_cb(char* data, int bytes)
 {
     // validate that the data makes sense
@@ -21,11 +79,18 @@ void helper_cb(char* data, int bytes)
 	// print latest packet
 	if (!en_newline) 
         std::cout << "\r" << CLEAR_LINE;
+	
+	std::cout << "Latest IMU data: " << n_packets << " packets received." << std::endl;
 
-    std::cout << 
-	printf("%7.2f|%7.2f|%7.2f",	(double)data_array[n_packets-1].accl_ms2[0],
-								(double)data_array[n_packets-1].accl_ms2[1],
-								(double)data_array[n_packets-1].accl_ms2[2]);
+	std::cout << std::fixed << std::setprecision(2);
+    std::cout << data_array[n_packets-1].accl_ms2[0], "|"
+				 data_array[n_packets-1].accl_ms2[1], "|"
+				 data_array[n_packets-1].accl_ms2[2], "|"
+				 data_array[n_packets-1].gyro_rad[0], "|"
+				 data_array[n_packets-1].gyro_rad[1], "|"
+				 data_array[n_packets-1].gyro_rad[2] << std::endl;
+
+	std::cout << std::defaultfloat;
 
 	if (en_newline) 
         std::cout << std::endl;
@@ -34,11 +99,16 @@ void helper_cb(char* data, int bytes)
 }
 
 void connect_cb()
-{
-
+{	
+	std::cout << "Connected to go-single-waypoint-server" << std::endl;
+	std::cout << "VOXL Hello Cross!!!!!" << std::endl;
+	std::cout << "   IMU Acceleration and Gyro Data\n";
+	std::cout << "   X   |   Y   |   Z   \n" << std::endl;
+	return;
 }
 
 void disconnect_cb()
 {
-
+	std::cerr << "\r" << CLEAR_LINE FONT_BLINK "Disconnected from go-single-waypoint-server" RESET_FONT << std::endl;
+	return;
 }
