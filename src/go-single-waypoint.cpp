@@ -18,7 +18,7 @@ void print_usage()
 	return;
 }
 
-int parse_opts(const int argc, const char* const argv[])
+int parse_opts(const int argc, char* const argv[])
 {
 	static struct option LongOptions[] =
 	{
@@ -27,15 +27,14 @@ int parse_opts(const int argc, const char* const argv[])
 		{"new_line",      no_argument,        0, 'n'},
 	};
 
-	int optionIndex= 0;
-	int status = 0;
-	int option;
+	int optionIndex {0};
+	int status {0};
+	int option {0};
 
-	while ((status == 0) && (option = getopt_long (argc, argv, "hi:n", &LongOptions[0], &optionIndex)) != -1)
+	while ((status == 0) && (option = getopt_long (argc, argv, "hi:n", LongOptions, &optionIndex)) != -1)
 	{
 		switch(option)
 		{
-
 			case 'h':
 				status = -1;
 				break;
@@ -59,8 +58,9 @@ int parse_opts(const int argc, const char* const argv[])
 
 	if(status != 0) return status;
 
-	if(strlen(imu_name) == 0){
-		printf("Missing required argument: input imu\n\n");
+	if(strlen(imu_name) == 0)
+	{
+		std::cout << "Missing required argument: input imu\n" << std::endl;
 		return -1;
 	}
 

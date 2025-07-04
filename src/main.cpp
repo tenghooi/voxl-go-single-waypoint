@@ -4,55 +4,34 @@
 #include <getopt.h>
 
 #include "go-single-waypoint.h"
-
-
-static int _parse_opts(int argc, char *argv[])
-{
-	static struct option long_options[] =
-		{
-			{"config", no_argument, 0, 'c'},
-			{"help", no_argument, 0, 'h'},
-		};
-
-	while (1)
-	{
-		int option_index = 0;
-		int c = getopt_long(argc, argv, "cm:i:s:dthz", long_options, &option_index);
-
-		if (c == -1)
-			break; // Detect the end of the options.
-
-		switch (c)
-		{
-		case 0:
-			// for long args without short equivalent that just set a flag
-			// nothing left to do so just break.
-			if (long_options[option_index].flag != 0)
-				break;
-			break;
-
-		case 'c':
-			config_file_read();
-			exit(0);
-			break;
-
-		case 'h':
-			_print_usage();
-			return -1;
-
-		default:
-			_print_usage();
-			return -1;
-		}
-	}
-	return 0;
-}
-
                    
 int main(int argc, const char** argv)
 {           
-    if (_parse_opts(argc, argv))
+    if (parse_opts(argc, argv))
+	{
+		print_usage();
 		return -1;
+	}
+
+	enable_signal_handler();
+	main_running = 1;
+	std::cout << "Subscribing to pipe: " << imu_name << std::endl;
+
+	pipe_client_set_connect_cb(CH, connect_cb, nullptr);
+	pip_client_set_disconnect_cb(CH, disconnect_cb, nullptr);
+	pip_client_set_simple_helper_cb(CH, helper_cb, nullptr);
+
+	int ret = pipe_client_open(CH, imu_name, CLIENT_NAME, CLIENT_FLAG_EN_SIMPLE_HELPER, IMU_RECOMMENDED_READ_BUF_SIZE);
+	if (ret < 0)
+	{
+		pipe_print_error(ret);
+		return -1;
+	}
+
+	while (main_running)
+		usleep(500000);
+	
+	pipe_client_close_all();
 
     return 0;
 }
