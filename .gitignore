@@ -10,3 +10,4 @@ build64
 pkg/IPK
 pkg/DEB
 pkg/data    
+.gitconfig
