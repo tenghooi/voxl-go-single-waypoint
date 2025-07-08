@@ -1,0 +1,12 @@
+Package: go-single-waypoint
+Version: 0.0.1
+Section: base
+Priority: optional
+Architecture: arm64
+Depends: libmodal-pipe,libmodal-json,libvoxl-cutils
+Conflicts: 
+Maintainer: chantenghooi@gmail.com
+Description: Starling 2 - Go Single Waypoint. 
+ This package provides a simple example of how to use the commandline 
+ go-single-waypoint application to navigate to a single waypoint using 
+ the Starling 2 platform.

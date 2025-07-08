@@ -42,7 +42,6 @@ endif()
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
 	string(REPLACE "-Wmissing-declarations" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 endif()
-
-
+ 
 # include each subdirectory, may have others in example/ or lib/ etc
 add_subdirectory (src)

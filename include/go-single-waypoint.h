@@ -12,6 +12,7 @@
 #include <voxl_cutils.h>
 
 #define CLIENT_NAME "go-single-waypoint"
+#define CH 1
 
 bool en_newline = false;
 static char imu_name[64];
