@@ -12,6 +12,8 @@ include_directories(
 	../include
 )
 
+message(STATUS "included ../include")
+
 find_library(MODAL_JSON  modal_json  HINTS /usr/lib /usr/lib64)
 find_library(MODAL_PIPE  modal_pipe  HINTS /usr/lib /usr/lib64)
 find_library(VOXL_CUTILS voxl_cutils HINTS /usr/lib /usr/lib64)

@@ -14,14 +14,14 @@
 #define CLIENT_NAME "go-single-waypoint"
 #define CH 1
 
-bool en_newline = false;
+extern bool en_newline;
 static char imu_name[64];
 
 void print_usage();
-int parse_opts(const int argc, char* const argv[]);
+int parse_opts(const int argc, char* argv[]);
 
-void helper_cb(char* data, int bytes);
-void connect_cb();
-void disconnect_cb();
+void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] void* context);
+void connect_cb(int, void*);
+void disconnect_cb(int, void*);
 
 #endif // GO_SINGLE_WAYPOINT_H

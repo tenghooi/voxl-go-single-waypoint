@@ -7,8 +7,8 @@
 ## APQ8096 is now EOL so this example only builds for qrb5165
 TOOLCHAIN_APQ8096_32="/opt/cross_toolchain/arm-gnueabi-4.9.toolchain.cmake"
 TOOLCHAIN_APQ8096_64="/opt/cross_toolchain/aarch64-gnu-4.9.toolchain.cmake"
-TOOLCHAIN_QRB5165="/opt/cross_toolchain/aarch64-gnu-7.toolchain.cmake"
-TOOLCHAIN_QRB5165_2="/opt/cross_toolchain/aarch64-gnu-9.toolchain.cmake"
+TOOLCHAIN_QRB5165="/opt/cross_toolchain/qrb5165_ubun1_18.04_aarch64.toolchain.cmake"
+TOOLCHAIN_QRB5165_2="/opt/cross_toolchain/qrb5165_ubun2_20.04_aarch64.toolchain.cmake"
 
 # placeholder in case more cmake opts need to be added later
 EXTRA_OPTS=""
@@ -74,6 +74,7 @@ case "$1" in
 		mkdir -p build
 		cd build
 		cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_QRB5165} -DPLATFORM=QRB5165 ${EXTRA_OPTS} ../
+		echo "Building for QRB5165 platform..."
 		make -j$(nproc)
 		cd ../
 		;;
@@ -82,6 +83,7 @@ case "$1" in
 		mkdir -p build
 		cd build
 		cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_QRB5165_2} -DPLATFORM=QRB5165_2 ${EXTRA_OPTS} ../
+		echo "Building for QRB5165 2.X platform..."
 		make -j$(nproc)
 		cd ../
 		;;

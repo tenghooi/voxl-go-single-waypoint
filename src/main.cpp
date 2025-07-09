@@ -5,7 +5,7 @@
 
 #include "go-single-waypoint.h"
                    
-int main(int argc, const char** argv)
+int main(int argc, char** argv)
 {           
     if (parse_opts(argc, argv))
 	{
@@ -18,8 +18,8 @@ int main(int argc, const char** argv)
 	std::cout << "Subscribing to pipe: " << imu_name << std::endl;
 
 	pipe_client_set_connect_cb(CH, connect_cb, nullptr);
-	pip_client_set_disconnect_cb(CH, disconnect_cb, nullptr);
-	pip_client_set_simple_helper_cb(CH, helper_cb, nullptr);
+	pipe_client_set_disconnect_cb(CH, disconnect_cb, nullptr);
+	pipe_client_set_simple_helper_cb(CH, helper_cb, nullptr);
 
 	int ret = pipe_client_open(CH, imu_name, CLIENT_NAME, CLIENT_FLAG_EN_SIMPLE_HELPER, IMU_RECOMMENDED_READ_BUF_SIZE);
 	if (ret < 0)

@@ -1,24 +1,26 @@
 #include "go-single-waypoint.h"
 
+bool en_newline {false}; // flag to enable newline after each print
+
 void print_usage()
 {
-	std::cout << "\n\
-		go-single-waypoint-server can be started from the command line manually with any of the following debug options. 
-		\n\
-		go-single-waypoint-server also creates a control pipe to test sending commands back to\n\
-		the server from either a client or from the command line. To test, try this:\n\
-		echo -n test > /run/mpa/go-single-waypoint/control\n\
-		\n\
-		-d, --debug                 print debug info\n\
-		-f, --frequency             publish frequency in hz\n\
-		-h, --help                  print this help message\n\
-		\n"\
+	std::cout << "\n"
+		"go-single-waypoint-server can be started from the command line manually with any of the following debug options." 
+		"\n"
+		"go-single-waypoint-server also creates a control pipe to test sending commands back to\n"
+		"the server from either a client or from the command line. To test, try this:\n"
+		"echo -n test > /run/mpa/go-single-waypoint/control\n"
+		"\n"
+		"-d, --debug                 print debug info\n"
+		"-f, --frequency             publish frequency in hz\n"
+		"-h, --help                  print this help message\n"
+		"\n"
 	<< std::endl;
 
 	return;
 }
 
-int parse_opts(const int argc, char* const argv[])
+int parse_opts(const int argc, char* argv[])
 {
 	static struct option LongOptions[] =
 	{
@@ -44,7 +46,7 @@ int parse_opts(const int argc, char* const argv[])
 				break;
 
 			case 'n':
-				en_newline = 1;
+				en_newline = true;
 				break;
 
 			// Unknown argument
@@ -68,7 +70,7 @@ int parse_opts(const int argc, char* const argv[])
 }
 
 // called when the simple helper has data for us
-void helper_cb(char* data, int bytes)
+void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] void* context)
 {
     // validate that the data makes sense
 	int n_packets {0};
@@ -83,12 +85,12 @@ void helper_cb(char* data, int bytes)
 	std::cout << "Latest IMU data: " << n_packets << " packets received." << std::endl;
 
 	std::cout << std::fixed << std::setprecision(2);
-    std::cout << data_array[n_packets-1].accl_ms2[0], "|"
-				 data_array[n_packets-1].accl_ms2[1], "|"
-				 data_array[n_packets-1].accl_ms2[2], "|"
-				 data_array[n_packets-1].gyro_rad[0], "|"
-				 data_array[n_packets-1].gyro_rad[1], "|"
-				 data_array[n_packets-1].gyro_rad[2] << std::endl;
+    std::cout << data_array[n_packets-1].accl_ms2[0] << "|"
+			  << data_array[n_packets-1].accl_ms2[1] << "|"
+			  << data_array[n_packets-1].accl_ms2[2] << "|"
+			  << data_array[n_packets-1].gyro_rad[0] << "|"
+			  << data_array[n_packets-1].gyro_rad[1] << "|"
+			  << data_array[n_packets-1].gyro_rad[2] << std::endl;
 
 	std::cout << std::defaultfloat;
 
@@ -98,7 +100,7 @@ void helper_cb(char* data, int bytes)
 	return;
 }
 
-void connect_cb()
+void connect_cb([[maybe_unused]] int ch, [[maybe_unused]] void* context)
 {	
 	std::cout << "Connected to go-single-waypoint-server" << std::endl;
 	std::cout << "VOXL Hello Cross!!!!!" << std::endl;
@@ -107,7 +109,7 @@ void connect_cb()
 	return;
 }
 
-void disconnect_cb()
+void disconnect_cb([[maybe_unused]] int ch, [[maybe_unused]] void* context)
 {
 	std::cerr << "\r" << CLEAR_LINE FONT_BLINK "Disconnected from go-single-waypoint-server" RESET_FONT << std::endl;
 	return;
