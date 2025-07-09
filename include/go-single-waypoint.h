@@ -12,10 +12,10 @@
 #include <voxl_cutils.h>
 
 #define CLIENT_NAME "go-single-waypoint"
-#define CH 1
+#define CH 0
 
 extern bool en_newline;
-static char imu_name[64];
+extern char imu_name[];
 
 void print_usage();
 int parse_opts(const int argc, char* argv[]);

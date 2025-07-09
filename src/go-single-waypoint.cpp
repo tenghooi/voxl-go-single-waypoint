@@ -1,6 +1,7 @@
 #include "go-single-waypoint.h"
 
 bool en_newline {false}; // flag to enable newline after each print
+char imu_name[64];
 
 void print_usage()
 {
@@ -43,6 +44,7 @@ int parse_opts(const int argc, char* argv[])
 
 			case 'i':
 				sscanf(optarg, "%s", imu_name);
+				std::cout << "Input IMU: " << imu_name << std::endl;
 				break;
 
 			case 'n':
@@ -79,8 +81,8 @@ void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] 
         return;
 
 	// print latest packet
-	if (!en_newline) 
-        std::cout << "\r" << CLEAR_LINE;
+	// if (true) 
+    //     std::cout << "\r" << CLEAR_LINE;
 	
 	std::cout << "Latest IMU data: " << n_packets << " packets received." << std::endl;
 
@@ -90,10 +92,10 @@ void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] 
 			  << data_array[n_packets-1].accl_ms2[2] << "|"
 			  << data_array[n_packets-1].gyro_rad[0] << "|"
 			  << data_array[n_packets-1].gyro_rad[1] << "|"
-			  << data_array[n_packets-1].gyro_rad[2] << std::endl;
+			  << data_array[n_packets-1].gyro_rad[2] ;
 
 	std::cout << std::defaultfloat;
-
+ 
 	if (en_newline) 
         std::cout << std::endl;
 
