@@ -44,7 +44,6 @@ int parse_opts(const int argc, char* argv[])
 
 			case 'i':
 				sscanf(optarg, "%s", imu_name);
-				std::cout << "Input IMU: " << imu_name << std::endl;
 				break;
 
 			case 'n':
@@ -81,20 +80,20 @@ void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] 
         return;
 
 	// print latest packet
-	// if (true) 
-    //     std::cout << "\r" << CLEAR_LINE;
+	if (!en_newline) 
+        std::cout << "\r" << CLEAR_LINE;
 	
-	std::cout << "Latest IMU data: " << n_packets << " packets received." << std::endl;
+	// std::cout << "Latest IMU data: " << n_packets << " packets received." << std::endl;
 
 	std::cout << std::fixed << std::setprecision(2);
-    std::cout << data_array[n_packets-1].accl_ms2[0] << "|"
-			  << data_array[n_packets-1].accl_ms2[1] << "|"
-			  << data_array[n_packets-1].accl_ms2[2] << "|"
-			  << data_array[n_packets-1].gyro_rad[0] << "|"
-			  << data_array[n_packets-1].gyro_rad[1] << "|"
-			  << data_array[n_packets-1].gyro_rad[2] ;
+    std::cout << std::setw(7) << data_array[n_packets-1].accl_ms2[0] << "|"
+			  << std::setw(7) << data_array[n_packets-1].accl_ms2[1] << "|"
+			  << std::setw(7) << data_array[n_packets-1].accl_ms2[2] << "|"
+			  << std::setw(7) << data_array[n_packets-1].gyro_rad[0] << "|"
+			  << std::setw(7) << data_array[n_packets-1].gyro_rad[1] << "|"
+			  << std::setw(7) << data_array[n_packets-1].gyro_rad[2] ;
 
-	std::cout << std::defaultfloat;
+	std::cout << std::defaultfloat << std::flush;
  
 	if (en_newline) 
         std::cout << std::endl;
@@ -104,10 +103,9 @@ void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] 
 
 void connect_cb([[maybe_unused]] int ch, [[maybe_unused]] void* context)
 {	
-	std::cout << "Connected to go-single-waypoint-server" << std::endl;
-	std::cout << "VOXL Hello Cross!!!!!" << std::endl;
+	std::cout << "VOXL Hello Cross!!!!!\n" << std::endl;
 	std::cout << "   IMU Acceleration and Gyro Data\n";
-	std::cout << "   X   |   Y   |   Z   \n" << std::endl;
+	std::cout << "   X   |   Y   |   Z   |   X   |   Y   |   Z   \n" << std::endl;
 	return;
 }
 

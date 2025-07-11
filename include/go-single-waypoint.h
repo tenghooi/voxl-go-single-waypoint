@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cstring>
 #include <unistd.h>
 #include <getopt.h>
 #include <vector>
