@@ -22,7 +22,7 @@ void print_usage();
 int parse_opts(const int argc, char* argv[]);
 
 void helper_cb([[maybe_unused]] int ch, char* data, int bytes, [[maybe_unused]] void* context);
-void connect_cb(int, void*);
-void disconnect_cb(int, void*);
+void mapper_connect_cb(int, void*);
+void mapper_disconnect_cb(int, void*);
 
 #endif // GO_SINGLE_WAYPOINT_H
