@@ -1,1 +1,1 @@
-1st line
+go-single-waypoint is a client application that uses commandline to send waypoint to Starling 2 (VOXL 2).
